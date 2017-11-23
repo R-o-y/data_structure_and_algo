@@ -13,136 +13,81 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         if (node !== null)
             node.parent = this
     }
+
+    getSmallestInSubstree() {
+        var node = this
+        while (node.leftChild !== null)
+            node = node.leftChild
+        return node
+    }
+
+    getLargestInSubstree() {
+        var node = this
+        while (node.rightChild !== null)
+            node = node.rightChild
+        return node
+    }
     
-    insert(key) {
-        if (key <= this.key) {
+    inOrderNext() {
+        if (this.rightChild !== null)
+            return this.rightChild.getSmallestInSubstree()
+        var node = this
+        while (node.parent.rightChild === node)
+            node = node.parent
+        return node.parent
+    }
+
+    inOrderPrevious() {
+        if (this.leftChild !== null)
+            return this.leftChild.getLargestInSubstree()
+        var node = this
+        while (node.parent.leftChild === node)
+            node = node.parent
+        return node.parent
+    }
+
+    insert(node) {
+        if (node.key <= this.key) {
             if (this.leftChild === null)
-                this.setLeftChild(new BinarySearchTreeNode(key))
+                this.setLeftChild(node)
             else
-                this.leftChild.insert(key)
+                this.leftChild.insert(node)
         } else {
             if (this.rightChild === null)
-                this.setRightChild(new BinarySearchTreeNode(key))
+                this.setRightChild(node)
             else
-                this.rightChild.insert(key)
+                this.rightChild.insert(node)
         }
+    }
+
+    /**
+     * get the reference of the node whose key equals the input one
+     * if there are multiple such nodes, 
+     * return the first one according to in order tranversal (leftmost one)
+     * @param {*} key 
+     */
+    getNodeByKey(key) {
+        if (this.key === key)
+            return this
+        return this.leftChild.getNodeByKey(key)
+        return this.rightChild.getNodeByKey(key)
+    }
+
+    static buildFromArray(nodeArray) {
+        var node = nodeArray[0]
+        for (var n of nodeArray.slice(1, nodeArray.length))
+            node.getRoot().insert(n)
+        return node.getRoot()
     }
 }
 
 
-class AVLTreeNode extends BinarySearchTreeNode {
-    constructor(key, parent=null, leftChild=null, rightChild=null, height=0) {
-        super(key, parent, leftChild, rightChild)
-        this.height = height
-    }
-
-    toString() {
-        return this.key + ': ' + this.height
-    }
-
-    rightRotate() {
-        var newRoot = this.leftChild
-        if (this.parent === null)
-            newRoot.parent = null
-        else
-            if (this.parent.leftChild === this)
-                this.parent.setLeftChild(newRoot)
-            else
-                this.parent.setRightChild(newRoot)
-        this.setLeftChild(newRoot.rightChild)
-        newRoot.setRightChild(this)
-        this.updateHeightToRoot()
-        newRoot.updateHeightToRoot()
-    }
-
-    leftRotate() {
-        var newRoot = this.rightChild
-        if (this.parent == null)
-            newRoot.parent = null
-        else
-            if (this.parent.leftChild === this)
-                this.parent.setLeftChild(newRoot)
-            else
-                this.parent.setRightChild(newRoot)
-        this.setRightChild(newRoot.leftChild)
-        newRoot.setLeftChild(this)
-        this.updateHeightToRoot()
-        newRoot.updateHeightToRoot()
-    }
-
-    getLeftChildHeight() {
-        return this.leftChild === null ? -1 : this.leftChild.height
-    }
-
-    getRightChildHeight() {
-        return this.rightChild === null ? -1 : this.rightChild.height
-    }
-
-    updateHeight() {
-        this.height = Math.max(this.getLeftChildHeight(), this.getRightChildHeight()) + 1
-    }
-
-    updateHeightToRoot() {
-        this.updateHeight()
-        if (this.parent !== null)
-            this.parent.updateHeightToRoot()
-    }
-
-    checkAndRotate() {
-        if (this.parent === null) return
-        
-        if (this.parent.leftChild === this) {  // this is left child
-            var siblingHeight = this.parent.rightChild === null ? -1 : this.parent.rightChild.height
-            if (this.height > siblingHeight + 1 && this.getLeftChildHeight() >= this.getRightChildHeight())  // non-zigzag
-                this.parent.rightRotate()
-            else if (this.height > siblingHeight + 1) {  // zigzag
-                this.leftRotate()
-                this.parent.parent.rightRotate()
-            } else this.parent.checkAndRotate()
-        } else {  // this is right child
-            var siblingHeight = this.parent.leftChild === null ? -1 : this.parent.leftChild.height
-            if (this.height > siblingHeight + 1 && this.getRightChildHeight() >= this.getLeftChildHeight()) // non-zigzag
-                this.parent.leftRotate()
-            else if (this.height > siblingHeight + 1) {  // zigzag
-                this.rightRotate()
-                this.parent.parent.leftRotate()
-            } else this.parent.checkAndRotate()
-        }
-    }
-
-    insert(key) {
-        if (key <= this.key) {
-            if (this.leftChild === null) {
-                this.setLeftChild(new AVLTreeNode(key))
-                this.updateHeightToRoot()
-                this.checkAndRotate()
-            } else
-                this.leftChild.insert(key)
-        } else {
-            if (this.rightChild === null) {
-                this.setRightChild(new AVLTreeNode(key))
-                this.updateHeightToRoot()
-                this.checkAndRotate()
-            } else
-                this.rightChild.insert(key)
-        } 
-    }
-}
-
-////////////////////// test
-var node = new AVLTreeNode(1)
-node.getRoot().insert(2)
-node.getRoot().insert(3)
-node.getRoot().insert(4)
-node.getRoot().insert(5)
-node.getRoot().insert(6)
-node.getRoot().insert(7)
+module.exports = BinarySearchTreeNode
 
 
-console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
-console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
-console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
-console.log(node.getRoot().draw())
+
+
+
 
 
 
