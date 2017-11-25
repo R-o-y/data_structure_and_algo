@@ -2,7 +2,11 @@
 
 - difference between == and ===: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators
 
-
+- get number representing char, e.g. A: 0, B: 1 and so on
+```
+var c = 'B'
+c.charCodeAt() - 'A'.charCodeAt()  // return 1
+```
 
 
 
