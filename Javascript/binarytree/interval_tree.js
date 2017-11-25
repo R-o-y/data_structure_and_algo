@@ -46,12 +46,42 @@ class IntervalTreeNode extends AVLTreeNode {
         super.insert(node)
         this.updateSubtreeHighestToRoot()
     }
+
+    static nodeListToIntervalList(nodeList) {
+        return nodeList.map(node => [node.low, node.high])
+    }
+
+    searchIntersectedIntervals(low, high) {
+        var resultNodeList = []
+
+        function checkIntersect(node, low, high) {
+            return node.low <= high && node.high >= low
+        }
+        
+        function searchRecursion(node, low, high) {
+            if (checkIntersect(node, low, high))
+                resultNodeList.push(node)
+            if (node.rightChild !== null) {
+                if (high < node.low)
+                    return
+                searchRecursion(node.rightChild, low, high)
+            }
+            if (node.leftChild !== null) {
+                if (low > node.subtreeHighest)
+                    return
+                searchRecursion(node.leftChild, low, high)
+            }
+        }
+        
+        searchRecursion(this, low, high)
+        return IntervalTreeNode.nodeListToIntervalList(resultNodeList)
+    }
 }
 
 ////////////////////// test
 var nodes = [
     new IntervalTreeNode(1, 6),
-    new IntervalTreeNode(2, 5),
+    new IntervalTreeNode(2, 3),
     new IntervalTreeNode(2, 6),
     new IntervalTreeNode(3, 4),
     new IntervalTreeNode(4, 9),
@@ -67,7 +97,7 @@ console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
 console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
 console.log(node.getNodeByKey(2).draw())
 console.log(node.getRoot().draw())
-
+console.log(node.getRoot().searchIntersectedIntervals(5, 11))
 
 
 
