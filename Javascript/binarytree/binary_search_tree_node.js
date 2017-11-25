@@ -58,6 +58,22 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         return node.parent
     }
 
+    preOrderNext() {
+        if (this.leftChild !== null) {
+            return this.leftChild
+        } else if (this.leftChild === null && this.rightChild !== null) {
+            return this.rightChild
+        } else if (this.leftChild === null && this.rightChildi === null) {
+            var curr = this
+            while(curr.parent !== null) {
+                if (curr.parent.left === curr && curr.parent.right !== null)
+                    return curr.parent.right
+                curr = curr.parent
+            }
+            return null
+        }
+    }
+
     insert(node) {
         if (node.key <= this.key) {
             if (this.leftChild === null)
