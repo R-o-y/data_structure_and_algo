@@ -51,7 +51,7 @@ class IntervalTreeNode extends AVLTreeNode {
         return nodeList.map(node => [node.low, node.high])
     }
 
-    searchIntersectedIntervals(low, high) {
+    searchIntersectedNodes(low, high) {
         var resultNodeList = []
 
         function checkIntersect(node, low, high) {
@@ -74,33 +74,33 @@ class IntervalTreeNode extends AVLTreeNode {
         }
         
         searchRecursion(this, low, high)
-        return IntervalTreeNode.nodeListToIntervalList(resultNodeList)
+        return resultNodeList
     }
 }
 
 ////////////////////// test
-var nodes = [
-    new IntervalTreeNode(1, 6),
-    new IntervalTreeNode(2, 3),
-    new IntervalTreeNode(2, 6),
-    new IntervalTreeNode(3, 4),
-    new IntervalTreeNode(4, 9),
-    new IntervalTreeNode(5, 12),
-    new IntervalTreeNode(6, 7),
-    new IntervalTreeNode(7, 8),
-]
+// var nodes = [
+//     new IntervalTreeNode(1, 6),
+//     new IntervalTreeNode(2, 3),
+//     new IntervalTreeNode(2, 6),
+//     new IntervalTreeNode(3, 4),
+//     new IntervalTreeNode(4, 9),
+//     new IntervalTreeNode(5, 12),
+//     new IntervalTreeNode(6, 7),
+//     new IntervalTreeNode(7, 8),
+// ]
 
-var node = IntervalTreeNode.buildFromArray(nodes)
+// var node = IntervalTreeNode.buildFromArray(nodes)
 
-console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
-console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
-console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
-console.log(node.getRoot().getNodeByKey(2).draw())
-console.log(node.getRoot().draw())
-console.log(node.getRoot().searchIntersectedIntervals(5, 11))
-console.log(node.getRoot().getNodeByKey(7).inOrderNext())
-console.log(node.getRoot().getNodeByKey(1).inOrderPrevious())
-console.log(node.getRoot().getNodeByKey(4).inOrderNext().key)
+// console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
+// console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
+// console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
+// console.log(node.getRoot().getNodeByKey(2).draw())
+// console.log(node.getRoot().draw())
+// console.log(IntervalTreeNode.nodeListToIntervalList(node.getRoot().searchIntersectedNodes(5, 11)))
+// console.log(node.getRoot().getNodeByKey(7).inOrderNext())
+// console.log(node.getRoot().getNodeByKey(1).inOrderPrevious())
+// console.log(node.getRoot().getNodeByKey(4).inOrderNext().key)
 
 
 
