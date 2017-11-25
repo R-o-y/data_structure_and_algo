@@ -59,24 +59,24 @@ class AVLTreeNode extends BinarySearchTreeNode {
     }
 
     checkAndRotate() {
-        if (this.parent === null) return
-        
-        if (this.parent.leftChild === this) {  // this is left child
-            var siblingHeight = this.parent.rightChild === null ? -1 : this.parent.rightChild.height
-            if (this.height > siblingHeight + 1 && this.getLeftChildHeight() >= this.getRightChildHeight())  // non-zigzag
-                this.parent.rightRotate()
-            else if (this.height > siblingHeight + 1) {  // zigzag
-                this.leftRotate()
-                this.parent.parent.rightRotate()
-            } else this.parent.checkAndRotate()
-        } else {  // this is right child
-            var siblingHeight = this.parent.leftChild === null ? -1 : this.parent.leftChild.height
-            if (this.height > siblingHeight + 1 && this.getRightChildHeight() >= this.getLeftChildHeight()) // non-zigzag
-                this.parent.leftRotate()
-            else if (this.height > siblingHeight + 1) {  // zigzag
+        if (this.getLeftChildHeight() > this.getRightChildHeight() + 1) {  // unbalance and left-heavy
+            // non-zigzag
+            if (this.leftChild.getLeftChildHeight() >= this.leftChild.getRightChildHeight())
                 this.rightRotate()
-                this.parent.parent.leftRotate()
-            } else this.parent.checkAndRotate()
+            else {
+                this.leftChild.leftRotate()
+                this.rightRotate()
+            }
+        } else if (this.getRightChildHeight() > this.getLeftChildHeight() + 1) {
+            if (this.rightChild.getRightChildHeight() >= this.rightChild.getLeftChildHeight())
+                this.leftRotate()
+            else {
+                this.rightChild.rightRotate()
+                this.leftRotate()
+            }
+        } else {
+            if (this.parent !== null)
+                this.parent.checkAndRotate()
         }
     }
 
@@ -97,9 +97,18 @@ class AVLTreeNode extends BinarySearchTreeNode {
                 this.rightChild.insert(node)
         } 
     }
+
+    delete() {
+        var curr = this.parent
+        super.delete()
+        while (curr !== null) {
+            curr.checkAndRotate()
+            curr = curr.parent
+        }
+    }
 }
 
-////////////////////// test
+//////////////////// test
 // var nodes = [
 //     new AVLTreeNode(1),
 //     new AVLTreeNode(2),
@@ -116,15 +125,17 @@ class AVLTreeNode extends BinarySearchTreeNode {
 // console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
 // console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
 // console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
-// console.log(node.getNodeByKey(2).draw())
+// console.log(node.getRoot().getNodeByKey(2).draw())
+// console.log(node.getRoot().draw())
+// node.getRoot().getNodeByKey(1).delete()
+// console.log(node.getRoot().draw())
+// node.getRoot().getNodeByKey(2).delete()
 // console.log(node.getRoot().draw())
 
 
 
 
 module.exports = AVLTreeNode
-
-
 
 
 

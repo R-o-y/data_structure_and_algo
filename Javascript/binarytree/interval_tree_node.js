@@ -95,9 +95,12 @@ var node = IntervalTreeNode.buildFromArray(nodes)
 console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
 console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
 console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
-console.log(node.getNodeByKey(2).draw())
+console.log(node.getRoot().getNodeByKey(2).draw())
 console.log(node.getRoot().draw())
 console.log(node.getRoot().searchIntersectedIntervals(5, 11))
+console.log(node.getRoot().getNodeByKey(7).inOrderNext())
+console.log(node.getRoot().getNodeByKey(1).inOrderPrevious())
+console.log(node.getRoot().getNodeByKey(4).inOrderNext().key)
 
 
 

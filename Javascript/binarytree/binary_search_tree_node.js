@@ -28,21 +28,33 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         return node
     }
     
+    /**
+     * return the next node in in-order traversal
+     */
     inOrderNext() {
         if (this.rightChild !== null)
             return this.rightChild.getSmallestInSubstree()
         var node = this
-        while (node.parent.rightChild === node)
+        while (node.parent.rightChild === node) {
             node = node.parent
+            if (node.parent === null)
+                return null
+        }
         return node.parent
     }
 
+    /**
+     * return the pervious node in in-order traversal
+     */
     inOrderPrevious() {
         if (this.leftChild !== null)
             return this.leftChild.getLargestInSubstree()
         var node = this
-        while (node.parent.leftChild === node)
+        while (node.parent.leftChild === node) {
             node = node.parent
+            if (node.parent === null)
+                return null
+        }
         return node.parent
     }
 
@@ -61,16 +73,51 @@ class BinarySearchTreeNode extends BinaryTreeNode {
     }
 
     /**
+     * delete the current node, if it is NOT the root node
+     */
+    delete() {
+        if (this.leftChild !== null && this.rightChild !== null) {
+            var inOrderNext = this.inOrderNext()
+            var originalParent = this.parent
+            var originalLeftChild = this.leftChild
+            var originalRightChild = this.rightChild
+            Object.assign(this, inOrderNext)
+            this.parent = originalParent
+            this.leftChild = originalLeftChild
+            this.rightChild = originalRightChild
+            inOrderNext.delete()
+        } else if (this.parent !== null &&  this.leftChild === null && this.rightChild === null) {
+            if (this.parent.leftChild === this)
+                this.parent.leftChild = null
+            else 
+                this.parent.rightChild = null
+            this.parent = null
+        } else if (this.parent !== null) {
+            var orphan = this.rightChild !== null ? this.rightChild : this.leftChild
+            if (this.parent.leftChild === this)
+                this.parent.setLeftChild(orphan)
+            else
+                this.parent.setRightChild(orphan)
+            this.parent = null
+        } else {
+            console.log('in this case, delete operation requires the change of the root pointer')
+        }
+    }
+
+    /**
      * get the reference of the node whose key equals the input one
      * if there are multiple such nodes, 
-     * return the first one according to in order tranversal (leftmost one)
+     * return the first one according to pre-order tranversal
      * @param {*} key 
      */
     getNodeByKey(key) {
         if (this.key === key)
             return this
-        return this.leftChild.getNodeByKey(key)
-        return this.rightChild.getNodeByKey(key)
+        if (this.leftChild !== null && this.leftChild.getNodeByKey(key) !== null)
+            return this.leftChild.getNodeByKey(key)
+        if (this.rightChild !== null && this.rightChild.getNodeByKey(key) !== null)
+            return this.rightChild.getNodeByKey(key)
+        return null
     }
 
     static buildFromArray(nodeArray) {
@@ -83,6 +130,16 @@ class BinarySearchTreeNode extends BinaryTreeNode {
 
 
 module.exports = BinarySearchTreeNode
+
+
+
+
+
+
+
+
+
+
 
 
 
