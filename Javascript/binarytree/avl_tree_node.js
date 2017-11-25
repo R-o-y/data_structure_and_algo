@@ -100,24 +100,31 @@ class AVLTreeNode extends BinarySearchTreeNode {
 }
 
 ////////////////////// test
-var nodes = [
-    new AVLTreeNode(1),
-    new AVLTreeNode(2),
-    new AVLTreeNode(2),
-    new AVLTreeNode(3),
-    new AVLTreeNode(4),
-    new AVLTreeNode(5),
-    new AVLTreeNode(6),
-    new AVLTreeNode(7),
-]
+// var nodes = [
+//     new AVLTreeNode(1),
+//     new AVLTreeNode(2),
+//     new AVLTreeNode(2),
+//     new AVLTreeNode(3),
+//     new AVLTreeNode(4),
+//     new AVLTreeNode(5),
+//     new AVLTreeNode(6),
+//     new AVLTreeNode(7),
+// ]
 
-var node = AVLTreeNode.buildFromArray(nodes)
+// var node = AVLTreeNode.buildFromArray(nodes)
 
-console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
-console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
-console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
-console.log(node.getNodeByKey(2).draw())
-console.log(node.getRoot().draw())
+// console.log(node.getRoot().breadthFirstTraverse().map(node => node.key))
+// console.log(node.getRoot().preOrderTraverseWithStack().map(node => node.key))
+// console.log(node.getRoot().inOrderTraverseWithRecursion().map(node => node.key))
+// console.log(node.getNodeByKey(2).draw())
+// console.log(node.getRoot().draw())
+
+
+
+
+module.exports = AVLTreeNode
+
+
 
 
 
