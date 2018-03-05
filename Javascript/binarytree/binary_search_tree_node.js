@@ -164,29 +164,29 @@ class BinarySearchTreeNode extends BinaryTreeNode {
     }
 }
 
-var nodes = [
-    new BinarySearchTreeNode(6),
-    new BinarySearchTreeNode(3),
-    new BinarySearchTreeNode(2),
-    new BinarySearchTreeNode(1),
-    new BinarySearchTreeNode(4),
-    new BinarySearchTreeNode(5),
-    new BinarySearchTreeNode(8),
-    new BinarySearchTreeNode(7),
-    new BinarySearchTreeNode(9),
-]
+// var nodes = [
+//     new BinarySearchTreeNode(6),
+//     new BinarySearchTreeNode(3),
+//     new BinarySearchTreeNode(2),
+//     new BinarySearchTreeNode(1),
+//     new BinarySearchTreeNode(4),
+//     new BinarySearchTreeNode(5),
+//     new BinarySearchTreeNode(8),
+//     new BinarySearchTreeNode(7),
+//     new BinarySearchTreeNode(9),
+// ]
 
-var root = BinarySearchTreeNode.builFromArray(nodes)
-console.log(root.draw())
-var curr = root.getSmallestInSubstree()
-while (true) {
-    if (curr === null)
-        break
-    console.log(curr.key)
-    curr = curr.postOrderNext()
-}
+// var root = BinarySearchTreeNode.builFromArray(nodes)
+// console.log(root.draw())
+// var curr = root.getSmallestInSubstree()
+// while (true) {
+//     if (curr === null)
+//         break
+//     console.log(curr.key)
+//     curr = curr.postOrderNext()
+// }
 
-// module.exports = BinarySearchTreeNode
+module.exports = BinarySearchTreeNode
 
 
 
