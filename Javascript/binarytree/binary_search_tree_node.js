@@ -28,6 +28,22 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         return node
     }
     
+    preOrderNext() {
+        if (this.leftChild !== null) {
+            return this.leftChild
+        } else if (this.leftChild === null && this.rightChild !== null) {
+            return this.rightChild
+        } else if (this.leftChild === null && this.rightChild === null) {
+            var curr = this
+            while(curr.parent !== null) {
+                if (curr.parent.leftChild === curr && curr.parent.rightChild !== null)
+                    return curr.parent.rightChild
+                curr = curr.parent
+            }
+            return null
+        }
+    }
+
     /**
      * return the next node in in-order traversal
      */
@@ -43,6 +59,26 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         return node.parent
     }
 
+    postOrderNext() {
+        if (this.parent === null)
+            return null
+        if (this.parent.leftChild === this) {
+            if (this.parent.rightChild === null)
+                return this.parent
+            else
+                var node = this.parent.rightChild
+                while (true) {
+                    if (node.leftChild !== null)
+                        node = node.leftChild
+                    else if (node.rightChild !== null)
+                        node = node.rightChild
+                    else
+                        return node
+            }
+        } else if (this.parent.rightChild === this)
+            return this.parent
+    }
+
     /**
      * return the pervious node in in-order traversal
      */
@@ -56,22 +92,6 @@ class BinarySearchTreeNode extends BinaryTreeNode {
                 return null
         }
         return node.parent
-    }
-
-    preOrderNext() {
-        if (this.leftChild !== null) {
-            return this.leftChild
-        } else if (this.leftChild === null && this.rightChild !== null) {
-            return this.rightChild
-        } else if (this.leftChild === null && this.rightChild === null) {
-            var curr = this
-            while(curr.parent !== null) {
-                if (curr.parent.leftChild === curr && curr.parent.rightChild !== null)
-                    return curr.parent.rightChild
-                curr = curr.parent
-            }
-            return null
-        }
     }
 
     insert(node) {
@@ -136,7 +156,7 @@ class BinarySearchTreeNode extends BinaryTreeNode {
         return null
     }
 
-    static buildFromArray(nodeArray) {
+    static builFromArray(nodeArray) {
         var node = nodeArray[0]
         for (var n of nodeArray.slice(1, nodeArray.length))
             node.getRoot().insert(n)
@@ -144,8 +164,29 @@ class BinarySearchTreeNode extends BinaryTreeNode {
     }
 }
 
+var nodes = [
+    new BinarySearchTreeNode(6),
+    new BinarySearchTreeNode(3),
+    new BinarySearchTreeNode(2),
+    new BinarySearchTreeNode(1),
+    new BinarySearchTreeNode(4),
+    new BinarySearchTreeNode(5),
+    new BinarySearchTreeNode(8),
+    new BinarySearchTreeNode(7),
+    new BinarySearchTreeNode(9),
+]
 
-module.exports = BinarySearchTreeNode
+var root = BinarySearchTreeNode.builFromArray(nodes)
+console.log(root.draw())
+var curr = root.getSmallestInSubstree()
+while (true) {
+    if (curr === null)
+        break
+    console.log(curr.key)
+    curr = curr.postOrderNext()
+}
+
+// module.exports = BinarySearchTreeNode
 
 
 
